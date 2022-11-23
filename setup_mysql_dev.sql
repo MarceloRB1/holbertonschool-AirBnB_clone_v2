@@ -1,4 +1,4 @@
--- Query to create a new database named hbnb_dev_db
+-- Qquery to create a new database named hbnb_dev_db
 -- Query to create a new user named hbnb_dev
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
