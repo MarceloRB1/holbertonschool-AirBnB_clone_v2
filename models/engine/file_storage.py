@@ -10,29 +10,13 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
-
-        if cls is None:
-            return FileStorage.__objects
-        else:
-            new_dict = {}
-            for k, v in self.__objects.items():
-                tmp = {k: v}
-                if cls == classes[v.to_dict()['__class__']]:
-                    new_dict.update(tmp)
-            return new_dict
+        if cls is not None:
+            n_Dic = {}
+            for key, value in self.__objects.items():
+                if cls == value.__class__:
+                    n_Dic[key] = value
+            return n_Dic
+        return self.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -56,6 +40,7 @@ class FileStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
+
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
                     'State': State, 'City': City, 'Amenity': Amenity,
@@ -66,15 +51,19 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                        self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
-        """Delete an object from __objects"""
-        if obj is not None:
-            self.__objects.pop(obj.to_dict()['__class__'] + '.' + obj.id)
+        """To delete obj from __objects if it’s inside"""
+        if not obj:
+            return
+        key = "{}.{}".format(type(obj).__name__, obj.id)
+        if key in self.__objects:
+            del self.__objects[key]
+            self.save()
 
     def close(self):
-        """Close session"""
+        """Call reload() method for deserializing the JSON file to objects"""
         self.reload()
