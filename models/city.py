@@ -6,7 +6,7 @@ from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import String
 from sqlalchemy.orm import relationship
-
+from os import getenv
 
 class City(BaseModel, Base):
     """Represents a city for a MySQL database.
@@ -16,7 +16,13 @@ class City(BaseModel, Base):
         name (sqlalchemy String): The name of the City.
         state_id (sqlalchemy String): The state id of the City.
     """
-    __tablename__ = "cities"
-    name = Column(String(128), nullable=False)
-    state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
-    places = relationship("Place", backref="cities", cascade="delete")
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        class City(BaseModel, Base):
+            """city class that cotains name and id"""
+            __tablename__ = "cities"
+            name = Column(String(128), nullable=False)
+            state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
+            places = relationship("Place", backref="cities", cascade="delete")
+    else:
+        class City(BaseModel):
+            """class basemodel"""
