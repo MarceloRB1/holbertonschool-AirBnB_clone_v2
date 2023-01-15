@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-""" web flask """
-
-
+ "" web flaask ""
+ 
 from flask import Flask, render_template
 from models import storage
 
