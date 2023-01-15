@@ -1,6 +1,6 @@
 #!/usr/bin/python3
- 
- "" web flaask ""
+"""displays a text variable"""
+
 
 from flask import Flask, render_template
 from models import storage
