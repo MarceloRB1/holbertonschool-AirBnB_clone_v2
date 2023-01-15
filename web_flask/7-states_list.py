@@ -1,9 +1,5 @@
 #!/usr/bin/python3
-
-
-""" show list of states in the flask app """
-
-
+""" ni idea """
 from flask import Flask, render_template
 from models import storage
 
