@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-""" ni idea """
+""" web flask """
+
+
 from flask import Flask, render_template
 from models import storage
 
